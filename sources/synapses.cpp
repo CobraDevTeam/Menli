@@ -33,9 +33,14 @@ Group::Ptr Synapses::dst() const {
     return m_dst;
 }
 
-void Synapses::transmit(std::vector<bool>) const {
+void Synapses::transmit(std::vector<bool> firing) const {
     std::vector<bool> spikes(m_dst->count(), true);
-    //TODO something useful here, instead of spiking everywhere always ?
+    for(size_t dst_i = 0, dst_size = m_dst->count(); dst_i < dst_size; ++dst_i) {
+        for(size_t src_i = 0, src_size = m_src->count(); src_i < src_size; ++src_i) {
+            // spike iff neuron src_i fires && neuron src_i connected to neuron dst_i
+            spikes[dst_i] = firing[src_i] && m_connect(src_i, dst_i);
+        }
+    }
 
     m_dst->integrate_spike(spikes, m_weight);
 }
