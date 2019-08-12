@@ -30,7 +30,7 @@ class Graph
 
         template <typename ...Args>
         Synapses::Ptr add_create_synapse(Args...);
-        void add_synapse(std::shared_ptr<Synapses> synapse);
+        void add_synapse(Synapses::Ptr synapse);
 
         void run(double dt, unsigned int nb_step=1);
         void run(double dt, double runtime);
@@ -41,7 +41,7 @@ class Graph
         void step(double dt);
 
     private:
-        std::vector<std::shared_ptr<Group>>     m_groups;
+        std::vector<Group::Ptr>     m_groups;
         std::unordered_map<Group::Ptr, std::vector<Synapses::Ptr>> m_connections;
 };
 
