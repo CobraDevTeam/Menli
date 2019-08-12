@@ -24,12 +24,12 @@ class Graph
     public:
         using Ptr = std::shared_ptr<Graph>;
 
-        void add_group(Group::Ptr group);
         template <typename ...Args>
-        Group::Ptr add_group(Args ...);
+        Group::Ptr add_create_group(Args ...);
+        void add_group(Group::Ptr group);
 
         template <typename ...Args>
-        Synapses::Ptr add_synapse(Args...);
+        Synapses::Ptr add_create_synapse(Args...);
         void add_synapse(std::shared_ptr<Synapses> synapse);
 
         void run(double dt, unsigned int nb_step=1);
@@ -42,7 +42,6 @@ class Graph
 
     private:
         std::vector<std::shared_ptr<Group>>     m_groups;
-        std::vector<std::shared_ptr<Synapses>>   m_synapses;
         // probably makes m_synapses useless, to investigate
         std::unordered_map<Group::Ptr, std::vector<Synapses::Ptr>> m_connections;
 };
@@ -50,14 +49,14 @@ class Graph
 Graph::Ptr make_graph();
 
 template <typename ...Args>
-Group::Ptr  Graph::add_group(Args... args) {
+Group::Ptr  Graph::add_create_group(Args... args) {
     auto ptr = make_group(args...);
     add_group(ptr);
     return ptr;
 }
 
 template <typename ...Args>
-Synapses::Ptr Graph::add_synapse(Args... args) {
+Synapses::Ptr Graph::add_create_synapse(Args... args) {
     auto ptr = make_synapses(args...);
     add_synapse(ptr);
     return ptr;

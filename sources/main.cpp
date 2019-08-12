@@ -17,9 +17,9 @@ int main()
     auto g1 = cg::make_group(10, 0.0);
 
     graph->add_group(g1);
-    auto g2 = graph->add_group(15, 1.0);
+    auto g2 = graph->add_create_group(15, 1.0);
 
-    graph->add_synapse(g1, g2);
+    graph->add_create_synapse(g1, g2);
     //graph->add_synapse(g2, g1, [] (size_t i, size_t j) {return i+j == 10;});
     graph->run(0.01, 1.0);
 
