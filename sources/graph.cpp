@@ -34,7 +34,6 @@ void Graph::add_synapse(Synapses::Ptr synapse) {
     else {
         m_connections[synapse->src()] = std::vector<Synapses::Ptr>(1, synapse);
     }
-    m_synapses.push_back(std::move(synapse));
 }
 
 void Graph::run(double dt, unsigned int nb_steps) {

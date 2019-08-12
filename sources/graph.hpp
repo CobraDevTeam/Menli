@@ -42,7 +42,6 @@ class Graph
 
     private:
         std::vector<std::shared_ptr<Group>>     m_groups;
-        // probably makes m_synapses useless, to investigate
         std::unordered_map<Group::Ptr, std::vector<Synapses::Ptr>> m_connections;
 };
 
