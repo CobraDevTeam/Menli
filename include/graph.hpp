@@ -13,8 +13,8 @@
 #include <vector>
 #include <unordered_map>
 
-#include "neurons.hpp"
-#include "synapses.hpp"
+#include <neurons.hpp>
+#include <synapses.hpp>
 
 namespace cg
 {

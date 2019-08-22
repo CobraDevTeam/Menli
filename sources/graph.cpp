@@ -10,9 +10,9 @@
 #include <cassert>
 #include <iostream>
 
-#include "graph.hpp"
-#include "neurons.hpp"
-#include "synapses.hpp"
+#include <graph.hpp>
+#include <neurons.hpp>
+#include <synapses.hpp>
 
 namespace cg
 {

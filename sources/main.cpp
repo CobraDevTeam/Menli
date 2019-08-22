@@ -7,9 +7,8 @@
  */
 
 #include <iostream>
-
-#include "graph.hpp"
-#include "neurons.hpp"
+#include <graph.hpp>
+#include <neurons.hpp>
 
 int main()
 {
