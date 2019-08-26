@@ -3,20 +3,26 @@
 namespace cg
 {
 
-Neurons::Neurons(unsigned int nb_neurons, double init_potential, double threshold)
-    : m_potentials(nb_neurons, init_potential)
-    , m_threshold(threshold)
-    //, m_connexions()
+Neurons::EquaDiff::EquaDiff(EquaDiff::DiffFct fct, double init_value, double threshold)
+    : diff_fct(fct)
+    , init_value(init_value)
+    , threshold(threshold)
+    {}
+
+Neurons::Neurons(unsigned int nb_neurons, EquaDiff common_eq)
+    : m_potentials(nb_neurons, common_eq.init_value)
+    , m_common_equation(std::move(common_eq))
     , m_spike_buffer(count(), 0.0)
     {}
 
-void Neurons::step(double dt) {
+void Neurons::step(double dt, double curr_time) {
     std::vector<bool> spikes(count(), false);
     for(size_t n = 0, nb_neurons = count(); n < nb_neurons; ++n) {
-        // Linear diffential increase of the potential
-        m_potentials[n] += + 1.0 * dt;
+        // Basic Euler integration
+        m_potentials[n] += dt*m_common_equation.diff_fct(curr_time, m_potentials[n]);
 
-        spikes[n] = (m_potentials[n] > m_threshold);
+        // Spike iff the potential is above the threshold
+        spikes[n] = (m_potentials[n] > m_common_equation.threshold);
     }
 
     for(auto& synapse : m_connexions) {

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <functional>
 
 #include "synapses.hpp"
 
@@ -17,21 +18,39 @@ public:
     // Synapse is friend to access the internal potential of Neurons
     friend class Synapse;
 
+    /// A struct encapsulating all common numerical data related to the internal
+    /// differential equation. A group a neurons is assumed to share one common such object
+    struct EquaDiff {
+        /// Convenient alias for a function of time and potential (respectively)
+        /// which yield the derivative of the potential function of the Neurons
+        using DiffFct = std::function<double(double, double)>;
+
+        /// Constructor
+        /// @params fct the derivative function on which the differential equation is based
+        /// @params init_val initial potential value of the differential equation
+        /// @params threshold potential above which the neurons will fire spikes
+        EquaDiff(DiffFct fct, double init_value, double threshold);
+        std::function<double(double, double)> diff_fct;
+        double init_value;
+        double threshold;
+    };
+
     /// Constructor
     /// @param nb_neurons the number of neurons grouped in this instance
     /// @param init_potential the initial potiential of all neurons in this instance
     /// @param threshold when the potential of a neuron reaches threshold, a spike is fired
     explicit Neurons(
             unsigned int nb_neurons,
-            double init_potential = 0.0,
-            double threshold=1.0);
+            EquaDiff common_equation);
 
     // Neurons class is non-copyable
     Neurons(Neurons&) = delete;
     Neurons& operator=(Neurons&) = delete;
 
     /// Performs one integration step, according to the inner integration method
-    void step(double dt);
+    /// @param dt the time step to make the integration
+    /// @param curr_time the cumulated running time of the current experiment
+    void step(double dt, double curr_time);
     /// Adds the spike_buffer to the actual internal potentials
     void integrate_spikes();
 
@@ -48,9 +67,9 @@ public:
 
 private:
     std::vector<double> m_potentials;
-    const double m_threshold;
-    std::vector<Synapse> m_connexions;
+    const EquaDiff m_common_equation;
     std::vector<double> m_spike_buffer;
+    std::vector<Synapse> m_connexions;
 };
 
 
