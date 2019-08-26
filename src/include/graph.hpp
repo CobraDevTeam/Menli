@@ -12,6 +12,7 @@ namespace cg
 
 class Graph {
 public:
+    Graph() = default;
     Graph(Graph&&) = default;
     Graph& operator=(Graph&&) = default;
 
@@ -30,6 +31,12 @@ private:
 
     /// All the neurons group that belong to this computational graph
     std::vector<Neurons::Ptr> m_nodes;
+
+private:
+    /// Cumulated runtime of the experiment
+    double m_cumulated_runtime;
+
+
 };
 
 template<typename ...Args>

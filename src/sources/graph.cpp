@@ -26,10 +26,13 @@ void Graph::step(double dt) {
         neurons->integrate_spikes();
     }
 
-    // Solve diff. equa. to modify internal potential, fires if potential above threshold
+    // Solve diff. equa. to modify internal potentials, fires if potential above threshold
     for(auto& neurons : m_nodes) {
-        neurons->step(dt);
+        // FIXME m_cumulated_runtime + dt/2 may be more accurate here ?
+        neurons->step(dt, m_cumulated_runtime);
     }
+
+    m_cumulated_runtime += dt;
 }
 
 }  // namespace cg
