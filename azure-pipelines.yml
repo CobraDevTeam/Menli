@@ -1,0 +1,14 @@
+# CMake
+# Build with the CMake cross-platform build system
+
+trigger:
+- dev_pipelines
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: CMake@1
+  inputs:
+    workingDirectory: 'build' # Optional
+    #cmakeArgs: # Optional
