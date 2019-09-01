@@ -40,7 +40,7 @@ private:
 };
 
 template<typename ...Args>
-Neurons& add_create_neurons(Args... args) {
+Neurons& Graph::add_create_neurons(Args... args) {
     // Create unique_ptr on Neurons
     auto neurons_ptr = make_neurons(args...);
     // Access underlying raw pointer
