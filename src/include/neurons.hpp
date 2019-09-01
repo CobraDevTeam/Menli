@@ -30,9 +30,9 @@ public:
         /// @params init_val initial potential value of the differential equation
         /// @params threshold potential above which the neurons will fire spikes
         EquaDiff(DiffFct fct, double init_value, double threshold);
-        std::function<double(double, double)> diff_fct;
-        double init_value;
-        double threshold;
+        std::function<double(double, double)> diff_fct = [] (double, double pot) {return pot;};
+        double init_value = 1.0;
+        double threshold = 10.0;
     };
 
     /// Constructor
