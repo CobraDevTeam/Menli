@@ -2,13 +2,14 @@
 #define GRAPH_HPP
 
 #include <memory>
-#include <vector>
 #include <unordered_map>
+#include <vector>
+#include <cmath>
 
+#include "integrate.hpp"
 #include "neurons.hpp"
 
-namespace cg
-{
+namespace cg {
 
 class Graph {
 public:
@@ -17,30 +18,33 @@ public:
     Graph& operator=(Graph&&) = default;
 
     void add_neurons(Neurons::Ptr&& ptr);
-    template<typename ...Args>
+
+    template <typename... Args>
         Neurons& add_create_neurons(Args... args);
 
     /// Runs the computations for a given number of iterations
-    void run(double dt, unsigned int nb_iterations);
+    template <typename StaticIntegrationPolicy = num::RK4>
+        void run(double dt, unsigned int nb_iterations);
     /// Runs the computations for a given amount of simulation time (not real-time)
-    void run(double dt, double runtime);
+    template <typename StaticIntegrationPolicy = num::RK4>
+        void run(double dt, double runtime);
 
 private:
     /// Performs one simulation iteration
-    void step(double dt);
+    template <typename StaticIntegrationPolicy>
+        void step(double dt);
 
+private:
     /// All the neurons group that belong to this computational graph
     std::vector<Neurons::Ptr> m_nodes;
 
-private:
     /// Cumulated runtime of the experiment
     double m_cumulated_runtime;
-
-
 };
 
-template<typename ...Args>
-Neurons& Graph::add_create_neurons(Args... args) {
+template <typename... Args>
+Neurons& Graph::add_create_neurons(Args... args)
+{
     // Create unique_ptr on Neurons
     auto neurons_ptr = make_neurons(args...);
     // Access underlying raw pointer
@@ -50,6 +54,8 @@ Neurons& Graph::add_create_neurons(Args... args) {
     return *u_ptr;
 }
 
+#include "graph_impl.hpp"
+
 } //namespace cg
 
-#endif  // GRAPH_HPP
+#endif // GRAPH_HPP
