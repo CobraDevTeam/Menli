@@ -32,7 +32,12 @@ add_compile_options(
 
 #======================================================================
 
-# Recurse to subdirectories
-add_subdirectory(src)
-add_subdirectory(examples)
-add_subdirectory(tests)
+# Build modules and lib
+foreach(module IN ITEMS src/numerical src/snn)
+    add_subdirectory(${module})
+endforeach()
+
+# Build all auxiliary stuff
+foreach(dir IN ITEMS tests examples)
+    add_subdirectory(${dir})
+endforeach()
