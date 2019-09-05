@@ -9,14 +9,14 @@ add_library(menli
     ${src}
     )
 
-target_include_directories(menli
-    PUBLIC
-    include
-    )
-
 target_link_libraries(menli
     PUBLIC
     numerical
+    )
+
+target_include_directories(menli
+    PUBLIC
+    include
     )
 
 target_compile_features(menli
