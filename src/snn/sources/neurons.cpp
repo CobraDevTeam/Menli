@@ -1,25 +1,16 @@
-#include "../include/neurons.hpp"
+#include "neurons.hpp"
 
 namespace cg {
 
-Neurons::EquaDiff::EquaDiff(EquaDiff::DiffFct fct, double init_value, double threshold)
-    : diff_fct(fct)
-    , init_value(init_value)
-    , threshold(threshold)
-{
-}
-
 Neurons::Neurons(unsigned int nb_neurons)
-    : Neurons(nb_neurons, EquaDiff())
-{
-}
+    : Neurons(nb_neurons, num::EquaDiff())
+    {}
 
-Neurons::Neurons(unsigned int nb_neurons, EquaDiff common_eq)
+Neurons::Neurons(unsigned int nb_neurons, num::EquaDiff common_eq)
     : m_potentials(nb_neurons, common_eq.init_value)
     , m_common_equation(std::move(common_eq))
     , m_spike_buffer(count(), 0.0)
-{
-}
+    {}
 
 void Neurons::integrate_spikes()
 {
